@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="noindex, nofollow" />
-  <title>Bungee Fly Fitness &mdash; Scope Document | Dan George Studio</title>
+  <title>Bungee Fly Fitness: Scope Document | Dan George Studio</title>
   <meta name="description" content="Website scope document for Bungee Fly Fitness, prepared by Dan George Studio." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -149,20 +149,14 @@
     }
 
     /* ======================================================
-       SCROLL FADE-IN (IntersectionObserver)
+       BOARDING PASS SCROLL REVEAL (only animated element)
     ====================================================== */
-    .fi {
+    .pass-reveal {
       opacity: 0;
-      transform: translateY(26px);
-      transition:
-        opacity  0.55s cubic-bezier(0.16, 1, 0.3, 1),
-        transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+      transform: translateY(40px);
+      transition: opacity 500ms ease-out, transform 500ms ease-out;
     }
-    .fi.d1 { transition-delay: 0.08s; }
-    .fi.d2 { transition-delay: 0.16s; }
-    .fi.d3 { transition-delay: 0.24s; }
-    .fi.d4 { transition-delay: 0.32s; }
-    .fi.show {
+    .pass-reveal.show {
       opacity: 1;
       transform: translateY(0);
     }
@@ -320,7 +314,7 @@
        CLOSING
     ====================================================== */
     .closing {
-      padding: 120px 0;
+      padding: 76px 0 64px;
       border-top: 1px solid var(--border);
     }
     .closing-line {
@@ -338,40 +332,19 @@
       letter-spacing: 0.04em;
     }
     @media (max-width: 767px) {
-      .closing { padding: 88px 0; }
+      .closing { padding: 56px 0 48px; }
     }
 
     /* ======================================================
        FOOTER
     ====================================================== */
     .site-footer {
-      padding: 26px 0;
-      border-top: 1px solid var(--border);
-    }
-    .footer-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-    }
-    .footer-brand {
-      font-size: 12.5px;
-      font-weight: 600;
-      color: var(--subtle);
-      letter-spacing: 0.04em;
-    }
-    .footer-contact {
-      font-size: 12.5px;
-      color: var(--subtle);
-      letter-spacing: 0.02em;
-    }
-    .footer-contact:hover { color: var(--primary); }
-    @media (max-width: 767px) {
-      .footer-row { flex-direction: column; align-items: flex-start; gap: 6px; }
+      height: 1px;
+      background: var(--border);
     }
 
     /* ======================================================
-       BOARDING PASS WIDGET  (namespaced .bpw — from experimental)
+       BOARDING PASS WIDGET  (namespaced .bpw)
     ====================================================== */
     .bpw {
       width: 100%;
@@ -669,9 +642,8 @@
   ====================================================== -->
   <section class="section-surface">
     <div class="wrap">
-      <div class="fi" style="margin-bottom:48px;">
+      <div style="margin-bottom:48px;">
         <span class="label">What gets built</span>
-        <h2>The four sections</h2>
       </div>
 
       <div class="cards-stack">
@@ -714,9 +686,9 @@
   <section class="section-sage">
     <div class="wrap">
 
-      <p class="fi" style="font-size:10px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--primary);margin-bottom:36px;">Live preview</p>
+      <p style="font-size:10px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--primary);margin-bottom:36px;">Live preview</p>
 
-      <div class="bpw fi">
+      <div class="bpw pass-reveal">
 
         <!-- Config form -->
         <div class="config">
@@ -982,31 +954,24 @@
   <!-- =====================================================
        FOOTER
   ====================================================== -->
-  <footer class="site-footer">
-    <div class="wrap">
-      <div class="footer-row">
-        <span class="footer-brand">Dan George Studio</span>
-        <a href="mailto:hello@dangeorge.studio" class="footer-contact">hello@dangeorge.studio</a>
-      </div>
-    </div>
-  </footer>
+  <footer class="site-footer" aria-hidden="true"></footer>
 
 
   <!-- =====================================================
        JAVASCRIPT
   ====================================================== -->
   <script>
-    /* ---- Scroll reveal ---- */
-    var items = document.querySelectorAll('.fi');
-    var io = new IntersectionObserver(function(entries) {
-      entries.forEach(function(e) {
-        if (e.isIntersecting) {
-          e.target.classList.add('show');
-          io.unobserve(e.target);
+    /* ---- Boarding pass reveal (fires once) ---- */
+    var passEl = document.querySelector('.pass-reveal');
+    if (passEl) {
+      var passObs = new IntersectionObserver(function(entries) {
+        if (entries[0].isIntersecting) {
+          entries[0].target.classList.add('show');
+          passObs.unobserve(entries[0].target);
         }
-      });
-    }, { threshold: 0.10, rootMargin: '0px 0px -36px 0px' });
-    items.forEach(function(el) { io.observe(el); });
+      }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+      passObs.observe(passEl);
+    }
 
     /* ---- Boarding pass (from experimental) ---- */
     (function () {
