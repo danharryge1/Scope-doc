@@ -1,0 +1,1086 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Bungee Fly Fitness &mdash; Scope Document | Dan George Studio</title>
+  <meta name="description" content="Website scope document for Bungee Fly Fitness, prepared by Dan George Studio." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ======================================================
+       RESET
+    ====================================================== */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* ======================================================
+       TOKENS
+    ====================================================== */
+    :root {
+      --primary:       #6D85A9;
+      --primary-dim:   rgba(109, 133, 169, 0.10);
+      --sage:          #E7ECE4;
+      --accent:        #FF3B7D;
+      --bg:            #ffffff;
+      --surface:       #F9FAFA;
+      --text:          #111827;
+      --muted:         #6B7280;
+      --subtle:        #9CA3AF;
+      --border:        #E5E7EB;
+      --font:          'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+      --max:           1080px;
+      --read:          660px;
+      --r:             14px;
+      --r-sm:          8px;
+    }
+
+    /* ======================================================
+       BASE
+    ====================================================== */
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overflow-x: hidden;
+    }
+
+    /* ======================================================
+       LAYOUT
+    ====================================================== */
+    .wrap {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 0 40px;
+    }
+    @media (max-width: 767px) {
+      .wrap { padding: 0 20px; }
+    }
+
+    /* ======================================================
+       TYPOGRAPHY SCALE
+    ====================================================== */
+    h1 {
+      font-size: clamp(2.4rem, 6vw, 4rem);
+      font-weight: 800;
+      line-height: 1.04;
+      letter-spacing: -0.025em;
+      color: var(--text);
+    }
+    h2 {
+      font-size: clamp(1.75rem, 4vw, 2.6rem);
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      color: var(--text);
+    }
+    h3 {
+      font-size: clamp(1.4rem, 3vw, 2rem);
+      font-weight: 700;
+      line-height: 1.15;
+      letter-spacing: -0.015em;
+      color: var(--text);
+    }
+    p {
+      font-size: 16px;
+      line-height: 1.82;
+      color: var(--muted);
+      font-weight: 400;
+    }
+    a {
+      color: inherit;
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    /* ======================================================
+       EYEBROW LABEL
+    ====================================================== */
+    .label {
+      display: inline-flex;
+      align-items: center;
+      font-size: 9.5px;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--primary);
+      background: var(--primary-dim);
+      border-radius: 100px;
+      padding: 4px 11px;
+      margin-bottom: 22px;
+    }
+
+    /* ======================================================
+       SECTION RHYTHM
+    ====================================================== */
+    .section {
+      padding: 104px 0;
+    }
+    .section-sage {
+      background: var(--sage);
+      padding: 72px 0 88px;
+    }
+    .section-surface {
+      background: var(--surface);
+      padding: 104px 0;
+    }
+    .section-divider {
+      height: 1px;
+      background: var(--border);
+      border: none;
+      margin: 0;
+    }
+    @media (max-width: 767px) {
+      .section       { padding: 72px 0; }
+      .section-sage  { padding: 56px 0 72px; }
+      .section-surface { padding: 72px 0; }
+    }
+
+    /* ======================================================
+       SCROLL FADE-IN (IntersectionObserver)
+    ====================================================== */
+    .fi {
+      opacity: 0;
+      transform: translateY(26px);
+      transition:
+        opacity  0.55s cubic-bezier(0.16, 1, 0.3, 1),
+        transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .fi.d1 { transition-delay: 0.08s; }
+    .fi.d2 { transition-delay: 0.16s; }
+    .fi.d3 { transition-delay: 0.24s; }
+    .fi.d4 { transition-delay: 0.32s; }
+    .fi.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ======================================================
+       HERO
+    ====================================================== */
+    .hero {
+      min-height: 42vh;
+      display: flex;
+      align-items: center;
+      padding: 88px 0 80px;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 32px;
+      width: 100%;
+    }
+    .hero-text {
+      flex: 1;
+      min-width: 0;
+    }
+    .hero-eyebrow {
+      display: block;
+      font-size: 9.5px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--primary);
+      margin-bottom: 18px;
+    }
+    .hero-sub {
+      margin-top: 18px;
+      font-size: 12.5px;
+      font-weight: 500;
+      color: var(--subtle);
+      letter-spacing: 0.04em;
+    }
+    .hero-fig {
+      flex-shrink: 0;
+      width: 160px;
+      height: 280px;
+      opacity: 0.065;
+    }
+    @media (max-width: 767px) {
+      .hero {
+        min-height: 50vh;
+        padding: 64px 0 60px;
+      }
+      .hero-fig { display: none; }
+    }
+
+    /* ======================================================
+       READING-WIDTH BLOCK
+    ====================================================== */
+    .read {
+      max-width: var(--read);
+    }
+
+    /* ======================================================
+       BUILD CARDS
+    ====================================================== */
+    .cards-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .build-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      padding: 52px 56px;
+      transition: box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .build-card:hover {
+      box-shadow: 0 10px 44px -10px rgba(0, 0, 0, 0.07);
+    }
+    .card-num {
+      font-size: 10.5px;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--primary);
+      margin-bottom: 14px;
+      display: block;
+    }
+    .card-body {
+      margin-top: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      max-width: var(--read);
+    }
+    .craft {
+      margin-top: 28px;
+      padding-left: 16px;
+      border-left: 2.5px solid var(--accent);
+      max-width: var(--read);
+    }
+    .craft p {
+      font-size: 13.5px;
+      font-style: italic;
+      color: var(--subtle);
+      line-height: 1.72;
+    }
+    @media (max-width: 767px) {
+      .build-card { padding: 36px 24px; }
+    }
+
+    /* ======================================================
+       PROCESS LIST
+    ====================================================== */
+    .process-list {
+      margin-top: 44px;
+      max-width: var(--read);
+    }
+    .process-item {
+      display: flex;
+      gap: 24px;
+      padding: 28px 0;
+      border-bottom: 1px solid var(--border);
+      align-items: flex-start;
+    }
+    .process-item:first-child {
+      border-top: 1px solid var(--border);
+    }
+    .p-num {
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--accent);
+      letter-spacing: 0.08em;
+      flex-shrink: 0;
+      padding-top: 3px;
+      min-width: 30px;
+    }
+    .p-text p {
+      font-size: 15px;
+      line-height: 1.74;
+    }
+    .process-footer {
+      margin-top: 32px;
+      max-width: var(--read);
+      font-size: 13.5px;
+      color: var(--subtle);
+      font-style: italic;
+      line-height: 1.72;
+    }
+
+    /* ======================================================
+       CLOSING
+    ====================================================== */
+    .closing {
+      padding: 120px 0;
+      border-top: 1px solid var(--border);
+    }
+    .closing-line {
+      font-size: clamp(1.7rem, 4.5vw, 3rem);
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -0.02em;
+      line-height: 1.12;
+      margin-bottom: 28px;
+    }
+    .signoff {
+      font-size: 12.5px;
+      color: var(--subtle);
+      font-weight: 500;
+      letter-spacing: 0.04em;
+    }
+    @media (max-width: 767px) {
+      .closing { padding: 88px 0; }
+    }
+
+    /* ======================================================
+       FOOTER
+    ====================================================== */
+    .site-footer {
+      padding: 26px 0;
+      border-top: 1px solid var(--border);
+    }
+    .footer-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .footer-brand {
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--subtle);
+      letter-spacing: 0.04em;
+    }
+    .footer-contact {
+      font-size: 12.5px;
+      color: var(--subtle);
+      letter-spacing: 0.02em;
+    }
+    .footer-contact:hover { color: var(--primary); }
+    @media (max-width: 767px) {
+      .footer-row { flex-direction: column; align-items: flex-start; gap: 6px; }
+    }
+
+    /* ======================================================
+       BOARDING PASS WIDGET  (namespaced .bpw — from experimental)
+    ====================================================== */
+    .bpw {
+      width: 100%;
+      max-width: 840px;
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+    .bpw .config {
+      background: #fff;
+      border-radius: 14px;
+      padding: 28px 28px 24px;
+      box-shadow: 0 2px 12px rgba(0,0,0,.07);
+    }
+    .bpw .config-title {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: #1D3557;
+      margin-bottom: 20px;
+    }
+    .bpw .form-fields {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .bpw .fg {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      flex: 1 1 160px;
+    }
+    .bpw .fg--wide { flex: 2 1 260px; }
+    .bpw .fg label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #1D3557;
+    }
+    .bpw .fg input,
+    .bpw .fg select {
+      height: 42px;
+      border: 2px solid #e4e4e7;
+      border-radius: 8px;
+      padding: 0 14px;
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+      font-weight: 500;
+      color: #111;
+      background: #fff;
+      outline: none;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+      width: 100%;
+      appearance: none;
+      -webkit-appearance: none;
+    }
+    .bpw .fg input::placeholder { color: #bbb; font-weight: 400; }
+    .bpw .fg input:focus,
+    .bpw .fg select:focus {
+      border-color: #E63946;
+      box-shadow: 0 0 0 3px rgba(230,57,70,.12);
+    }
+    .bpw .select-wrap { position: relative; }
+    .bpw .select-wrap select { padding-right: 36px; cursor: pointer; }
+    .bpw .select-wrap::after {
+      content: '';
+      position: absolute;
+      right: 14px; top: 50%;
+      transform: translateY(-50%);
+      width: 0; height: 0;
+      border-left: 4px solid transparent;
+      border-right: 4px solid transparent;
+      border-top: 5px solid #888;
+      pointer-events: none;
+    }
+    .bpw .custom-fg {
+      display: none;
+      flex-direction: column;
+      gap: 6px;
+      flex: 1 1 140px;
+    }
+    .bpw .custom-fg.show { display: flex; }
+    /* Card */
+    .bpw .card {
+      width: 100%;
+      aspect-ratio: 2.5 / 1;
+      background: #fff;
+      border-radius: 18px;
+      box-shadow:
+        0 1px 2px rgba(0,0,0,.04),
+        0 4px 12px rgba(0,0,0,.07),
+        0 16px 40px rgba(0,0,0,.10),
+        0 40px 80px rgba(0,0,0,.08);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    /* Header strip */
+    .bpw .bp-header {
+      flex: 0 0 18%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 28px;
+      background: linear-gradient(128deg, #E63946 0%, #1D3557 100%);
+    }
+    .bpw .bp-header span {
+      font-weight: 800;
+      font-size: clamp(9px, 1.4vw, 13px);
+      letter-spacing: 0.2em;
+      color: #fff;
+      text-transform: uppercase;
+    }
+    /* Body */
+    .bpw .bp-body { flex: 1; display: flex; overflow: hidden; }
+    /* Main panel */
+    .bpw .main {
+      flex: 0 0 70%;
+      padding: clamp(14px, 2.2vw, 22px) clamp(16px, 2.8vw, 28px);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .bpw .ghost {
+      position: absolute;
+      right: -4%; top: 50%;
+      transform: translateY(-50%);
+      width: 60%; height: 110%;
+      opacity: 0.075;
+      pointer-events: none;
+    }
+    .bpw .row {
+      display: flex;
+      align-items: flex-end;
+      gap: clamp(14px, 2.4vw, 28px);
+    }
+    .bpw .field { display: flex; flex-direction: column; gap: 3px; }
+    .bpw .lbl {
+      font-size: clamp(7px, 0.9vw, 9px);
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      color: #999;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+    .bpw .val {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: clamp(10px, 1.5vw, 14px);
+      font-weight: 500;
+      color: #111;
+      letter-spacing: 0.02em;
+      white-space: nowrap;
+      transition: opacity 0.15s ease;
+    }
+    .bpw .val--dest {
+      font-family: 'Inter', sans-serif;
+      font-size: clamp(26px, 4.8vw, 44px);
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      color: #0d0d0d;
+      line-height: 1;
+    }
+    .bpw .message-row {
+      border-top: 1px solid #ebebeb;
+      padding-top: clamp(10px, 1.4vw, 14px);
+    }
+    .bpw .msg-text {
+      margin-top: 4px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: clamp(9px, 1.25vw, 12px);
+      font-weight: 400;
+      color: #555;
+      font-style: italic;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      transition: opacity 0.15s ease;
+    }
+    /* Perforated divider */
+    .bpw .perf { flex: 0 0 0px; position: relative; width: 0; }
+    .bpw .perf::before {
+      content: '';
+      position: absolute;
+      inset: -2px 0;
+      border-left: 2px dashed #ccc;
+    }
+    /* Stub */
+    .bpw .stub {
+      flex: 1;
+      padding: clamp(14px, 2.2vw, 22px) clamp(14px, 2.2vw, 20px);
+      display: flex;
+      flex-direction: column;
+      gap: clamp(10px, 1.6vw, 14px);
+    }
+    .bpw .stub .val { font-size: clamp(9px, 1.3vw, 13px); }
+    .bpw .barcode { margin-top: auto; }
+    /* Mobile */
+    @media (max-width: 600px) {
+      .bpw .card { aspect-ratio: auto; }
+      .bpw .bp-body { flex-direction: column; }
+      .bpw .main { flex: none; width: 100%; gap: 14px; padding: 18px 18px 14px; }
+      .bpw .perf { width: 100%; height: 0; }
+      .bpw .perf::before { inset: 0 -2px; border-left: none; border-top: 2px dashed #ccc; }
+      .bpw .stub { flex-direction: row; flex-wrap: wrap; gap: 12px 18px; padding: 14px 18px 18px; }
+      .bpw .barcode { flex-basis: 100%; margin-top: 4px; }
+      .bpw .val--dest { font-size: 30px; }
+      .bpw .row { gap: 14px; flex-wrap: wrap; }
+      .bpw .config { padding: 22px 18px 18px; }
+      .bpw .form-fields { gap: 12px; }
+      .bpw .fg { flex: 1 1 140px; }
+    }
+
+    /* ======================================================
+       UTILITY
+    ====================================================== */
+    .mt-6  { margin-top: 24px; }
+    .mt-8  { margin-top: 32px; }
+    .mt-10 { margin-top: 40px; }
+    strong { color: var(--text); font-weight: 700; }
+
+  </style>
+</head>
+<body>
+
+  <!-- =====================================================
+       SECTION 1: HERO
+  ====================================================== -->
+  <header class="hero">
+    <div class="wrap">
+      <div class="hero-inner">
+
+        <div class="hero-text fi">
+          <span class="hero-eyebrow">Scope Document</span>
+          <h1>Bungee Fly<br>Fitness</h1>
+          <p class="hero-sub">Prepared by Dan George Studio</p>
+        </div>
+
+        <!-- Bungee figure silhouette (decorative) -->
+        <div class="hero-fig" aria-hidden="true">
+          <svg viewBox="0 0 140 300" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;">
+            <line x1="70" y1="0" x2="70" y2="50" stroke="#6D85A9" stroke-width="3"/>
+            <ellipse cx="70" cy="64" rx="26" ry="8" fill="#6D85A9" opacity="0.55"/>
+            <circle cx="70" cy="88" r="19" fill="#6D85A9"/>
+            <ellipse cx="70" cy="136" rx="17" ry="34" fill="#6D85A9"/>
+            <path d="M53 122 Q32 94 14 76" stroke="#6D85A9" stroke-width="11" stroke-linecap="round" fill="none"/>
+            <path d="M87 122 Q108 94 126 76" stroke="#6D85A9" stroke-width="11" stroke-linecap="round" fill="none"/>
+            <path d="M58 168 Q44 208 36 244" stroke="#6D85A9" stroke-width="10" stroke-linecap="round" fill="none"/>
+            <path d="M82 168 Q96 208 104 244" stroke="#6D85A9" stroke-width="10" stroke-linecap="round" fill="none"/>
+            <ellipse cx="33" cy="248" rx="9" ry="5" fill="#6D85A9"/>
+            <ellipse cx="107" cy="248" rx="9" ry="5" fill="#6D85A9"/>
+          </svg>
+        </div>
+
+      </div>
+    </div>
+  </header>
+
+
+  <!-- =====================================================
+       SECTION 2: BRAND STUDY
+  ====================================================== -->
+  <section class="section">
+    <div class="wrap">
+      <div class="fi"><span class="label">Brand observations</span></div>
+      <div class="fi d1 read">
+        <p>Your palette sits in muted blues, whites and soft sage. Quiet, warm, and anchored around you as the face of Bungee Fly. Your headings use a flowing script typeface, with body copy in standard sans. Instagram carries most of the brand energy: video first, colourful captions, you at the centre of every post.</p>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- =====================================================
+       SECTION 3: ARCHITECTURE
+  ====================================================== -->
+  <section class="section" style="padding-top:0;">
+    <div class="wrap">
+      <hr class="section-divider" style="margin-bottom:80px;" />
+      <div class="fi">
+        <span class="label">Architecture</span>
+        <h2>How the site fits together</h2>
+      </div>
+      <div class="fi d1 read mt-8">
+        <p>The site works as a small ecosystem of pages rather than a single long page, so you can share direct links when you need to. The home page carries the story: who you are, what bungee is, this week's schedule at a glance, and a clear path to book. Two dedicated pages sit alongside it: the full class schedule, and the voucher shop. That way you can link someone straight to the voucher page from Instagram without them having to scroll past everything else first.</p>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- =====================================================
+       SECTION 4a: BUILD SECTION CARDS 01 + 02
+  ====================================================== -->
+  <section class="section-surface">
+    <div class="wrap">
+      <div class="fi" style="margin-bottom:48px;">
+        <span class="label">What gets built</span>
+        <h2>The four sections</h2>
+      </div>
+
+      <div class="cards-stack">
+
+        <!-- CARD 01 -->
+        <div class="build-card fi">
+          <span class="card-num">01</span>
+          <h3>Booking</h3>
+          <div class="card-body">
+            <p>The current flow works: people email, you send a payment link, they pay. What's missing is the entry point. A clear 'Book a Class' button in the top navigation and pinned at the end of every section means no one has to hunt.</p>
+            <p>Tapping the button opens a short form: name, email, class, preferred date. It submits straight to your inbox, formatted so you can reply with a payment link in seconds. Underneath, a smaller 'Prefer email?' link sends them directly to you for anyone who wants to skip the form.</p>
+            <p>Because you're open 8am to 6:30pm every day, the site makes that obvious. Reply expectation is same day, which builds trust for first timers wondering if they'll hear back.</p>
+          </div>
+          <div class="craft">
+            <p>Form submissions land in your inbox styled as a branded mini email, not a raw form dump. Saves you reading through five fields every time.</p>
+          </div>
+        </div>
+
+        <!-- CARD 02 -->
+        <div class="build-card fi">
+          <span class="card-num">02</span>
+          <h3>Gift Vouchers</h3>
+          <div class="card-body">
+            <p>A dedicated voucher section on the site built around the boarding pass concept you sent. Three suggested amounts tied to your existing sessions: £15 for a Bungee Fit session, £50 for a Block Book of 4, and £45 for a Solo Private. Plus a custom amount option for anyone with a specific budget in mind. Checkout runs through Stripe, and the voucher lands in the buyer's inbox as a branded boarding pass PDF ready to forward or print.</p>
+            <p>The boarding pass itself is the product, not just the receipt. Designed to feel like a real ticket: passenger name, destination, voucher code, personal message from the buyer. Every voucher gets a unique code and an expiry date, so redemptions are easy to track when someone emails to book.</p>
+          </div>
+          <div class="craft">
+            <p>The buyer sees a live preview of the boarding pass on the site as they fill in the recipient's name, amount and message. What they see is exactly what gets sent.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- =====================================================
+       BOARDING PASS COMPONENT (immediately after card 02)
+  ====================================================== -->
+  <section class="section-sage">
+    <div class="wrap">
+
+      <p class="fi" style="font-size:10px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--primary);margin-bottom:36px;">Live preview</p>
+
+      <div class="bpw fi">
+
+        <!-- Config form -->
+        <div class="config">
+          <p class="config-title">Customise your voucher</p>
+          <div class="form-fields">
+            <div class="fg">
+              <label for="bp-name">Who's it for?</label>
+              <input type="text" id="bp-name" placeholder="Name" maxlength="30" autocomplete="off" spellcheck="false" />
+            </div>
+            <div class="fg">
+              <label for="bp-amount">Session</label>
+              <div class="select-wrap">
+                <select id="bp-amount">
+                  <option value="&#163;15" data-session="Bungee Fit Session">&#163;15 / Bungee Fit Session</option>
+                  <option value="&#163;50" data-session="Block Book of 4" selected>&#163;50 / Block Book of 4</option>
+                  <option value="&#163;45" data-session="Solo Private">&#163;45 / Solo Private</option>
+                  <option value="custom" data-session="Gift Voucher">Other amount...</option>
+                </select>
+              </div>
+            </div>
+            <div class="fg custom-fg" id="bp-custom-fg">
+              <label for="bp-custom">Amount (&#163;)</label>
+              <input type="number" id="bp-custom" placeholder="0" min="1" max="9999" />
+            </div>
+            <div class="fg fg--wide">
+              <label for="bp-msg">Message</label>
+              <input type="text" id="bp-msg" placeholder="Happy birthday, enjoy the fly x" maxlength="60" autocomplete="off" spellcheck="false" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Voucher card -->
+        <div class="card">
+
+          <!-- Header strip -->
+          <div class="bp-header">
+            <span>Boarding Pass</span>
+            <span>Bungee Fly Fitness</span>
+          </div>
+
+          <!-- Card body -->
+          <div class="bp-body">
+
+            <!-- Main panel -->
+            <div class="main">
+
+              <!-- Ghost bungee figure -->
+              <svg class="ghost" aria-hidden="true" viewBox="0 0 200 150" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+                <path d="M98 72 Q76 44 56 10" stroke="black" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                <circle cx="98" cy="72" r="5" stroke="black" stroke-width="2" fill="none"/>
+                <path d="M34 80 Q65 76 105 74 Q132 73 154 71" stroke="black" stroke-width="19" stroke-linecap="round" fill="none"/>
+                <circle cx="174" cy="70" r="14" fill="black"/>
+                <path d="M144 63 C139 46 134 28 130 12" stroke="black" stroke-width="7" stroke-linecap="round" fill="none"/>
+                <circle cx="129" cy="8" r="5" fill="black"/>
+                <path d="M144 79 C145 97 148 118 150 138" stroke="black" stroke-width="7" stroke-linecap="round" fill="none"/>
+                <circle cx="151" cy="142" r="5" fill="black"/>
+                <path d="M34 80 C24 65 12 48 4 32" stroke="black" stroke-width="7" stroke-linecap="round" fill="none"/>
+                <ellipse cx="3" cy="28" rx="7" ry="4" transform="rotate(-38 3 28)" fill="black"/>
+                <path d="M34 80 C26 96 16 114 8 128" stroke="black" stroke-width="7" stroke-linecap="round" fill="none"/>
+                <ellipse cx="6" cy="132" rx="7" ry="4" transform="rotate(18 6 132)" fill="black"/>
+              </svg>
+
+              <!-- Row 1: Passenger + Destination -->
+              <div class="row">
+                <div class="field">
+                  <div class="lbl">Passenger</div>
+                  <div class="val" id="bp-passenger">JANE DOE</div>
+                </div>
+                <div class="field">
+                  <div class="lbl">Destination</div>
+                  <div class="val val--dest">LIFTOFF</div>
+                </div>
+              </div>
+
+              <!-- Row 2: Code, Amount, Expiry -->
+              <div class="row">
+                <div class="field">
+                  <div class="lbl">Voucher Code</div>
+                  <div class="val" id="bp-code">BF-0000-XX</div>
+                </div>
+                <div class="field">
+                  <div class="lbl">Amount</div>
+                  <div class="val" id="bp-disp-amount">&#163;50</div>
+                </div>
+                <div class="field">
+                  <div class="lbl">Expiry</div>
+                  <div class="val" id="bp-expiry">24 APR 2027</div>
+                </div>
+              </div>
+
+              <!-- Message -->
+              <div class="message-row">
+                <div class="lbl">Message</div>
+                <div class="msg-text" id="bp-message">Happy birthday, enjoy the fly x</div>
+              </div>
+            </div>
+
+            <!-- Perforated divider -->
+            <div class="perf" aria-hidden="true"></div>
+
+            <!-- Stub panel -->
+            <div class="stub">
+              <div class="field">
+                <div class="lbl">Passenger</div>
+                <div class="val" id="bp-stub-passenger">JANE DOE</div>
+              </div>
+              <div class="field">
+                <div class="lbl">Destination</div>
+                <div class="val">LIFTOFF</div>
+              </div>
+              <div class="field">
+                <div class="lbl">Amount</div>
+                <div class="val" id="bp-stub-amount">&#163;50</div>
+              </div>
+              <!-- Barcode (visual only) -->
+              <div class="barcode">
+                <svg viewBox="0 0 138 44" xmlns="http://www.w3.org/2000/svg" style="display:block;width:100%;max-width:138px;">
+                  <rect x="0"   y="0" width="3"  height="44" fill="#111"/>
+                  <rect x="5"   y="0" width="1"  height="44" fill="#111"/>
+                  <rect x="8"   y="0" width="4"  height="44" fill="#111"/>
+                  <rect x="14"  y="0" width="1"  height="44" fill="#111"/>
+                  <rect x="17"  y="0" width="2"  height="44" fill="#111"/>
+                  <rect x="21"  y="0" width="4"  height="44" fill="#111"/>
+                  <rect x="27"  y="0" width="1"  height="44" fill="#111"/>
+                  <rect x="30"  y="0" width="3"  height="44" fill="#111"/>
+                  <rect x="35"  y="0" width="1"  height="44" fill="#111"/>
+                  <rect x="38"  y="0" width="2"  height="44" fill="#111"/>
+                  <rect x="42"  y="0" width="4"  height="44" fill="#111"/>
+                  <rect x="48"  y="0" width="1"  height="44" fill="#111"/>
+                  <rect x="51"  y="0" width="3"  height="44" fill="#111"/>
+                  <rect x="56"  y="0" width="2"  height="44" fill="#111"/>
+                  <rect x="60"  y="0" width="1"  height="44" fill="#111"/>
+                  <rect x="63"  y="0" width="4"  height="44" fill="#111"/>
+                  <rect x="69"  y="0" width="1"  height="44" fill="#111"/>
+                  <rect x="72"  y="0" width="3"  height="44" fill="#111"/>
+                  <rect x="77"  y="0" width="2"  height="44" fill="#111"/>
+                  <rect x="81"  y="0" width="4"  height="44" fill="#111"/>
+                  <rect x="87"  y="0" width="1"  height="44" fill="#111"/>
+                  <rect x="90"  y="0" width="2"  height="44" fill="#111"/>
+                  <rect x="94"  y="0" width="3"  height="44" fill="#111"/>
+                  <rect x="99"  y="0" width="1"  height="44" fill="#111"/>
+                  <rect x="102" y="0" width="4"  height="44" fill="#111"/>
+                  <rect x="108" y="0" width="2"  height="44" fill="#111"/>
+                  <rect x="112" y="0" width="1"  height="44" fill="#111"/>
+                  <rect x="115" y="0" width="3"  height="44" fill="#111"/>
+                  <rect x="120" y="0" width="4"  height="44" fill="#111"/>
+                  <rect x="126" y="0" width="1"  height="44" fill="#111"/>
+                  <rect x="129" y="0" width="2"  height="44" fill="#111"/>
+                  <rect x="133" y="0" width="3"  height="44" fill="#111"/>
+                </svg>
+              </div>
+            </div>
+
+          </div><!-- /bp-body -->
+        </div><!-- /card -->
+
+      </div><!-- /.bpw -->
+    </div>
+  </section>
+
+
+  <!-- =====================================================
+       SECTION 4b: BUILD SECTION CARDS 03 + 04
+  ====================================================== -->
+  <section class="section-surface">
+    <div class="wrap">
+      <div class="cards-stack">
+
+        <!-- CARD 03 -->
+        <div class="build-card fi">
+          <span class="card-num">03</span>
+          <h3>Class Schedule</h3>
+          <div class="card-body">
+            <p>A weekly grid showing every class across your 8am to 6:30pm window, 7 days a week. Classes sit in clear blocks: Bungee Fit Sessions, Solo Privates, Group Privates. So someone landing on the page can see at a glance when they can come in.</p>
+            <p>Each class block links straight through to the booking form, with the class name and day prefilled. No hunting, no typing out the session name. They pick the slot, tap book, and the form already knows what they want.</p>
+            <p>The schedule runs from static data at launch, so it's fast, reliable, and low maintenance. If your timetable starts changing often, we can move it to a live updating version later where you edit classes yourself from a simple dashboard.</p>
+          </div>
+          <div class="craft">
+            <p>Clicking a class in the schedule prefills the booking form, so the distance from 'I want this one' to 'request sent' is two taps.</p>
+          </div>
+        </div>
+
+        <!-- CARD 04 -->
+        <div class="build-card fi">
+          <span class="card-num">04</span>
+          <h3>About</h3>
+          <div class="card-body">
+            <p>A proper story page that puts you at the centre of the brand, because you already are. The structure moves through three beats: who you are and how you got here, what bungee fitness actually is for anyone who hasn't tried it, and what Bungee Fly stands for that makes it different from walking into any other studio.</p>
+            <p>The hero of the page isn't a stock image. It's real footage of you in the space, teaching, in session. People book fitness classes from people they trust, and two seconds of seeing you in action does more than any amount of copy.</p>
+            <p>Bungee fitness gets explained here in plain English, not as a sales pitch. New visitors to the site can land on this page, understand what they're signing up for, and walk into their first class knowing exactly what to expect.</p>
+          </div>
+          <div class="craft">
+            <p>A short piece of real studio footage sits at the top of the page in place of a traditional hero image. Immediately tells the visitor what they're walking into, and it's unmistakably Bungee Fly, not a template.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- =====================================================
+       SECTION 5: WHAT COMES NEXT
+  ====================================================== -->
+  <section class="section">
+    <div class="wrap">
+
+      <div class="fi">
+        <span class="label">Process</span>
+        <h2>What comes next</h2>
+      </div>
+
+      <div class="fi d1 read mt-6">
+        <p>Once the scope is signed off, the build runs in four stages:</p>
+      </div>
+
+      <div class="process-list">
+        <div class="process-item fi">
+          <span class="p-num">01</span>
+          <div class="p-text">
+            <p><strong>Setup and foundations.</strong> Design system locked in, page structures built, brand direction applied across the site.</p>
+          </div>
+        </div>
+        <div class="process-item fi d1">
+          <span class="p-num">02</span>
+          <div class="p-text">
+            <p><strong>Build.</strong> All four sections built out: booking flow, voucher shop, schedule, about. Boarding pass component designed and wired into the voucher page. Stripe checkout configured.</p>
+          </div>
+        </div>
+        <div class="process-item fi d2">
+          <span class="p-num">03</span>
+          <div class="p-text">
+            <p><strong>Review.</strong> You walk through the full site on a live staging link, flag anything you'd change, and I make the adjustments. One round of revisions included.</p>
+          </div>
+        </div>
+        <div class="process-item fi d3">
+          <span class="p-num">04</span>
+          <div class="p-text">
+            <p><strong>Launch.</strong> Site goes live on your domain. I hand over everything you need to run it day to day, and I'm around for the first two weeks to fix anything that comes up.</p>
+          </div>
+        </div>
+      </div>
+
+      <p class="process-footer fi">Total build time: around two weeks from sign off, depending on how quickly the studio footage and any class details land with me.</p>
+
+    </div>
+  </section>
+
+
+  <!-- =====================================================
+       SECTION 6: CLOSING
+  ====================================================== -->
+  <section class="closing">
+    <div class="wrap">
+      <div class="fi">
+        <p class="closing-line">That's the build.<br>Let me know what you think.</p>
+        <p class="signoff">Dan George &nbsp;/&nbsp; Dan George Studio</p>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- =====================================================
+       FOOTER
+  ====================================================== -->
+  <footer class="site-footer">
+    <div class="wrap">
+      <div class="footer-row">
+        <span class="footer-brand">Dan George Studio</span>
+        <a href="mailto:hello@dangeorge.studio" class="footer-contact">hello@dangeorge.studio</a>
+      </div>
+    </div>
+  </footer>
+
+
+  <!-- =====================================================
+       JAVASCRIPT
+  ====================================================== -->
+  <script>
+    /* ---- Scroll reveal ---- */
+    var items = document.querySelectorAll('.fi');
+    var io = new IntersectionObserver(function(entries) {
+      entries.forEach(function(e) {
+        if (e.isIntersecting) {
+          e.target.classList.add('show');
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.10, rootMargin: '0px 0px -36px 0px' });
+    items.forEach(function(el) { io.observe(el); });
+
+    /* ---- Boarding pass (from experimental) ---- */
+    (function () {
+      var ALPHA = 'ABCDEFGHJKLMNPQRSTUVWXYZ';
+      var DEFAULT_MSG = 'Happy birthday, enjoy the fly x';
+
+      function rand(n) { return Math.floor(Math.random() * n); }
+
+      function generateCode() {
+        var num = 1000 + rand(9000);
+        var a = ALPHA[rand(ALPHA.length)];
+        var b = ALPHA[rand(ALPHA.length)];
+        return 'BF-' + num + '-' + a + b;
+      }
+
+      function calcExpiry() {
+        var d = new Date();
+        d.setFullYear(d.getFullYear() + 1);
+        var mo = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+        return d.getDate() + ' ' + mo[d.getMonth()] + ' ' + d.getFullYear();
+      }
+
+      function fade(el, newText) {
+        el.style.opacity = '0';
+        setTimeout(function () { el.textContent = newText; el.style.opacity = '1'; }, 150);
+      }
+
+      /* Init */
+      document.getElementById('bp-code').textContent   = generateCode();
+      document.getElementById('bp-expiry').textContent = calcExpiry();
+
+      var inpName    = document.getElementById('bp-name');
+      var inpAmount  = document.getElementById('bp-amount');
+      var inpCustom  = document.getElementById('bp-custom');
+      var inpMsg     = document.getElementById('bp-msg');
+      var customFg   = document.getElementById('bp-custom-fg');
+      var elPassMain = document.getElementById('bp-passenger');
+      var elPassStub = document.getElementById('bp-stub-passenger');
+      var elAmtMain  = document.getElementById('bp-disp-amount');
+      var elAmtStub  = document.getElementById('bp-stub-amount');
+      var elMsg      = document.getElementById('bp-message');
+
+      function updateAmount() {
+        var opt = inpAmount.options[inpAmount.selectedIndex];
+        if (inpAmount.value === 'custom') {
+          customFg.classList.add('show');
+          var n = parseInt(inpCustom.value, 10);
+          var display = (n && n > 0) ? '£' + n : '£??';
+          fade(elAmtMain, display);
+          fade(elAmtStub, display);
+        } else {
+          customFg.classList.remove('show');
+          fade(elAmtMain, inpAmount.value);
+          fade(elAmtStub, inpAmount.value);
+        }
+        fade(document.getElementById('bp-code'), generateCode());
+      }
+
+      inpName.addEventListener('input', function () {
+        var v = inpName.value.trim();
+        fade(elPassMain, v ? v.toUpperCase() : 'JANE DOE');
+        fade(elPassStub, v ? v.toUpperCase() : 'JANE DOE');
+      });
+
+      inpAmount.addEventListener('change', updateAmount);
+      inpCustom.addEventListener('input',  updateAmount);
+
+      inpMsg.addEventListener('input', function () {
+        fade(elMsg, inpMsg.value || DEFAULT_MSG);
+      });
+
+      updateAmount();
+    }());
+  </script>
+
+</body>
+</html>
